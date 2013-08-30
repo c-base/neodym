@@ -10,7 +10,7 @@ msg_map = message.RegisteredMessageDict(
 )
 
 baseConfig = {
-    'level': logging.INFO,
+    'level': logging.DEBUG,
     'format': '%(asctime)16s %(name)32s %(message)s'
 }
 
