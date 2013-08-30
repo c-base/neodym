@@ -29,7 +29,4 @@ def register(unique_identifier, attrs):
 
 from client import Client
 from server import Server
-
-
-def Message(*args, **kwargs):
-    return message.Message(*args, **kwargs)
+from message import Message
