@@ -11,7 +11,7 @@ msg_map = message.RegisteredMessageDict(
 
 baseConfig = {
     'level': logging.INFO,
-    'format': '%(asctime)16s %(name)24s %(message)s'
+    'format': '%(asctime)16s %(name)32s %(message)s'
 }
 
 def init():
