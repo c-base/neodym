@@ -41,7 +41,7 @@ class Message(object):
         self.unique_identifier = unique_identifier
         self.attrs = attrs
 
-        self.logger = logging.getLogger('Message')
+        self.logger = logging.getLogger('Message-%s' % id(self))
         self.logger.debug('Initializing: %s' % self)
 
         if not (
@@ -86,7 +86,6 @@ class Message(object):
 
     @classmethod
     def unpack(cls, line):
-        logging.debug('Map: %s' % str(cls.__map__))
         try:
             message = json.loads(line.strip())
             unique_identifier, attrs = message.items()[0]

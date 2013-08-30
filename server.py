@@ -14,7 +14,7 @@ class Server(asyncore.dispatcher):
     def __init__(self, address):
         asyncore.dispatcher.__init__(self)
 
-        self.logger = logging.getLogger('Server')
+        self.logger = logging.getLogger('Server-%s' % id(self))
         self.logger.info('Initializing: %s' % self)
 
         if not self.__hash__:
@@ -57,6 +57,7 @@ class Server(asyncore.dispatcher):
                         c.put(message)
                     else:
                         self.logger.debug('Hash mismatch!')
-            else:
-                self.logger.debug('Empty queue...')
 
+    def serve_forever(self):
+        while True:
+            self.update()

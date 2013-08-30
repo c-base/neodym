@@ -16,7 +16,7 @@ class Connection(asyncore.dispatcher):
         asyncore.dispatcher.__init__(self, sock=sock)
         self.parent = parent
 
-        self.logger = logging.getLogger('Connection')
+        self.logger = logging.getLogger('Connection-%s' % id(self))
         self.logger.info('Initializing: %s' % self)
 
         self.send_queue = Queue.Queue()
