@@ -3,11 +3,16 @@ import server
 import connection
 import message
 import exceptions
+import logging
 
 msg_map = message.RegisteredMessageDict(
     handshake=['msg_map_hash']
 )
 
+baseConfig = {
+    'level': logging.INFO,
+    'format': '%(asctime)16s %(name)24s %(message)s'
+}
 
 def init():
     msg_map_hash = msg_map.hash()
