@@ -52,8 +52,9 @@ class Server(asyncore.dispatcher):
             if not c.recv_queue.empty():
                 message = c.recv_queue.get()
                 self.logger.debug('Received message: %s' % message)
+
+                # perform handshake operation on new connections
                 if c.is_connected is False:
-                    # perform handshake operation
                     if message.unique_identifier == 'handshake':
                         self.logger.debug('Handling handshake request...')
                         if message.get_attr('msg_map_hash') == self.__hash__:
@@ -64,6 +65,7 @@ class Server(asyncore.dispatcher):
                         else:
                             self.logger.debug('Hash mismatch!')
 
+                # handle the message for all connected clients
                 elif c.is_connected is True:
                     # todo: handle message
                     self.logger.info(message)
