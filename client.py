@@ -28,7 +28,6 @@ class Client(asyncore.dispatcher):
     def handle_close(self):
         self.logger.info('Closing.')
         Connection.__all__ = set()
-        self.close()
 
     def client_connect(self):
         self.connect((self.host, self.port))
@@ -51,7 +50,7 @@ class Client(asyncore.dispatcher):
         message = self.__connection.recv_queue.get()
         if not message:
             self.logger.info('Timeout reached!')
-            self.handle_close()
+            self.close()
         elif message.unique_identifier == 'handshake':
             self.logger.info('Connection established.')
             return self.__connection
