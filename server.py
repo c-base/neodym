@@ -1,11 +1,10 @@
 import asyncore
 import logging
 import socket
-import time
-
 
 from neodym.connection import Connection
 from neodym.exceptions import NotYetInitialized
+
 
 class Server(asyncore.dispatcher):
     __hash__ = ""
@@ -23,6 +22,8 @@ class Server(asyncore.dispatcher):
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.bind(address)
         self.address = self.socket.getsockname()
+
+        self.set_reuse_addr()
 
     def __del__(self):
         self.logger.debug('Vanishing!')
@@ -46,17 +47,29 @@ class Server(asyncore.dispatcher):
     def update(self):
         asyncore.poll2()
         pass
-        for c in Connection.__all__:
+
+        for c in [c for c in Connection.__all__ if not c.is_connected]:
             if not c.recv_queue.empty():
                 message = c.recv_queue.get()
                 self.logger.debug('Received message: %s' % message)
-                if message.unique_identifier == 'handshake':
-                    self.logger.debug('Handling handshake request...')
-                    if message.get_attr('msg_map_hash') == self.__hash__:
-                        self.logger.debug('Handshake: OK')
-                        c.put(message)
-                    else:
-                        self.logger.debug('Hash mismatch!')
+                if c.is_connected is False:
+                    # perform handshake operation
+                    if message.unique_identifier == 'handshake':
+                        self.logger.debug('Handling handshake request...')
+                        if message.get_attr('msg_map_hash') == self.__hash__:
+                            self.logger.debug('Handshake: OK')
+                            c.is_connected = True
+                            c.put(message)
+                            c.handle_write()
+                        else:
+                            self.logger.debug('Hash mismatch!')
+
+                elif c.is_connected is True:
+                    # todo: handle message
+                    self.logger.info(message)
+
+                else:
+                    self.logger.debug('Internal server error!')
 
     def serve_forever(self):
         while True:
