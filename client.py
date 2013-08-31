@@ -15,7 +15,7 @@ class Client(asyncore.dispatcher):
         asyncore.dispatcher.__init__(self)
 
         self.logger = logging.getLogger('Client-%s' % id(self))
-        self.logger.info('Initializing: %s' % self)
+        self.logger.debug('Initializing: %s' % self)
 
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 
