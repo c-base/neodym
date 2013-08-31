@@ -19,11 +19,11 @@ class Client(asyncore.dispatcher):
 
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        self.connection = None
+        self.__connection = None
 
     def handle_connect(self):
         self.logger.info('Connected to server, establishing connection...')
-        self.connection = Connection(self.socket, self)
+        self.__connection = Connection(self.socket, self)
 
     def handle_close(self):
         self.logger.info('Closing.')
@@ -41,16 +41,16 @@ class Client(asyncore.dispatcher):
         pass
         return
 
-    def session(self):
+    def connection(self):
         handshake = Message('handshake', [self.__hash__])
-        self.connection.put(handshake)
+        self.__connection.put(handshake)
 
-        while self.connection.recv_queue.empty():
+        while self.__connection.recv_queue.empty():
             self.update()
 
-        message = self.connection.recv_queue.get()
+        message = self.__connection.recv_queue.get()
         if not message:
             self.logger.info('Timeout reached!')
             self.handle_close()
-            return
-        print message
+            return None
+        return self.__connection
