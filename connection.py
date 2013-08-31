@@ -58,8 +58,7 @@ class Connection(asyncore.dispatcher):
 
     def handle_close(self):
         self.logger.debug('Closing!')
-        if self in self.__all__:
-            self.__all__.remove(self)
+        self.drop()
         self.close()
 
     def put(self, message):
@@ -74,3 +73,6 @@ class Connection(asyncore.dispatcher):
         if not self.recv_queue.empty():
             return self.recv_queue.get()
 
+    def drop(self):
+        if self in self.__all__:
+            self.__all__.remove(self)
