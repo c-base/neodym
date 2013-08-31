@@ -1,15 +1,16 @@
-= Neodym
+Neodym
+======
 
 Neodym is a thin message-bus wrapper around asyncore. It includes a client and
 a server dispatcher, as well as an easily configurable message-bus. Json serves
 as the designated transport syntax.
 
 
-= Examples
+Examples
+========
 
 This is a simple server:
 
-    :::python
     import neodym
     import logging
 
@@ -35,7 +36,6 @@ This is a simple server:
 
 This is a simple client:
 
-    :::python
     import neodym
     import logging
     import time
