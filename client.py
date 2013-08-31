@@ -1,29 +1,6 @@
 """neodym.client
 
 This module contains all routines for the neodym client.
-
-The client connects to a server and tries to establish a connection by
-performing a handshaking procedure. If the handshake completes
-successfully, the client can send messages to the server.
-
-
-Example:
-========
-
-import neodym
-import logging
-
-neodym.log_level = logging.DEBUG
-baseConfig = neodym.baseConfig()
-logging.baseConfig(**baseConfig)
-
-neodym.init()
-
-client = neodym.Client(host='127.0.0.1', port=12345)
-client.client_connect()
-
-connection = client.connection()
-print connection
 """
 __author__ = "Brian Wiborg <baccenfutter@c-base.org"
 __date__ = "2013/08/31"
@@ -38,6 +15,10 @@ from neodym.message import Message
 
 class Client(asyncore.dispatcher):
     """neodym.client.Client
+
+    The client connects to a server and tries to establish a connection by
+    performing a handshaking procedure. If the handshake completes
+    successfully, the client can send messages to the server.
     """
     __hash__ = ""
 
