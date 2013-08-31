@@ -22,7 +22,7 @@ class Connection(asyncore.dispatcher):
         self.send_queue = Queue.Queue()
         self.recv_queue = Queue.Queue()
 
-        self.handshaking = False
+        self.is_connected = False
         Connection.__all__.append(self)
 
     def __del__(self):
