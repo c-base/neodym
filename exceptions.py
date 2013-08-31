@@ -1,3 +1,7 @@
+""""""
+__author__ = "Brian Wiborg <baccenfutter@c-base.org"
+__date__ = "2013/08/31"
+
 class NeodymException(Exception):
     pass
 
