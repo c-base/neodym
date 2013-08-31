@@ -12,6 +12,7 @@ import time
 
 from neodym.connection import Connection
 from neodym.exceptions import NotYetInitialized
+from neodym.handler import Handler
 
 
 class Server(asyncore.dispatcher):
@@ -103,9 +104,11 @@ class Server(asyncore.dispatcher):
 
                     # handle the message for all connected clients
                     elif c.is_connected is True:
-                        # todo: handle message
-                        c.logger.info(message)
-
+                        handlers = Handler.get_handlers(message)
+                        callbacks = [h(message, c) for h in handlers]
+                        self.logger.debug('Handling message through: %s' % (
+                            str(callbacks)
+                        ))
                     else:
                         self.logger.debug('Internal server error!')
         else:

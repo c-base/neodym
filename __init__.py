@@ -10,6 +10,7 @@ import client
 import server
 import connection
 import message
+import handler
 import exceptions
 import logging
 
@@ -52,10 +53,11 @@ def init():
     """
     msg_map_hash = msg_map.hash()
     msg_map.__hash__ = msg_map_hash
-    message.Message.__map__ = msg_map
     server.Server.__hash__ = msg_map_hash
     client.Client.__hash__ = msg_map_hash
     connection.Connection.__hash__ = msg_map_hash
+    message.Message.__map__ = msg_map
+    handler.Handler.__map__ = msg_map
 
 
 def register(unique_identifier, attrs):
@@ -77,3 +79,4 @@ def register(unique_identifier, attrs):
 from client import Client
 from server import Server
 from message import Message
+from handler import Handler
