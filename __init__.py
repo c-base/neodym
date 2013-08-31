@@ -9,10 +9,14 @@ msg_map = message.RegisteredMessageDict(
     handshake=['msg_map_hash']
 )
 
-baseConfig = {
-    'level': logging.INFO,
-    'format': '%(asctime)16s %(levelname)10s %(name)s - %(message)s'
-}
+log_level = logging.INFO
+log_format = '%(asctime)16s Neodym %(levelname)10s %(name)32s - %(message)s'
+
+def baseConfig():
+    return {
+        'level': log_level,
+        'format': log_format,
+    }
 
 def init():
     msg_map_hash = msg_map.hash()
