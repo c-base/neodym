@@ -1,4 +1,7 @@
-""""""
+"""neodym.server
+
+This module contains all routines for the neodym server.
+"""
 __author__ = "Brian Wiborg <baccenfutter@c-base.org"
 __date__ = "2013/08/31"
 
@@ -12,10 +15,20 @@ from neodym.exceptions import NotYetInitialized
 
 
 class Server(asyncore.dispatcher):
+    """neodym.server.Server
+
+    The server listens on an address and waits for connection-request from
+    clients. If a connection-request is received, a new instance of
+    neodym.connection.Connection is initialized and the client socket is passed
+    along. The connection can be obtained by calling the connection method.
+    """
     __hash__ = ""
     __max__ = 3
 
     def __init__(self, address):
+        """
+        :param address:     address-tuple in format of ('127.0.0.1', 0)
+        """
         asyncore.dispatcher.__init__(self)
 
         self.logger = logging.getLogger('Server-%s' % id(self))
@@ -31,14 +44,24 @@ class Server(asyncore.dispatcher):
         self.set_reuse_addr()
 
     def __del__(self):
+        """neodym.server.Server.__del__
+
+        Leave a note in the neodym logs if the server vanishes.
+        """
         self.logger.debug('Vanishing!')
 
     def server_activate(self):
+        """neodym.server.Server.server_activate
+
+        Active the server, e.g. start listening.
+        """
         self.logger.info('Binding on %s (max: %s)' % (self.address,
                                                        self.__max__))
         self.listen(self.__max__)
 
     def handle_accept(self):
+        """asyncore.dispatcher.handle_accept
+        """
         self.logger.info('Connection request incoming...')
         client_info = self.accept()
         if client_info:
@@ -46,10 +69,16 @@ class Server(asyncore.dispatcher):
             Connection(socket, self)
 
     def handle_close(self):
+        """asyncore.dispatcher.handle_close"""
         self.logger.info('Closing.')
         self.close()
 
     def update(self):
+        """neodym.server.Server.update
+
+        Call asyncore.poll2 and then iterate over all connections and handle
+        any given input.
+        """
         asyncore.poll2()
         pass
 
@@ -83,5 +112,9 @@ class Server(asyncore.dispatcher):
             time.sleep(0.1)
 
     def serve_forever(self):
+        """neodym.server.Server.serve_forever
+
+        Update the server in a continuous loop.
+        """
         while True:
             self.update()
