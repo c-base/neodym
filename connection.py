@@ -26,7 +26,7 @@ class Connection(asyncore.dispatcher):
         Connection.__all__.append(self)
 
     def __del__(self):
-        self.logger.debug('Vanishing!')
+        self.logger.info('Terminated.')
 
     def writable(self):
         return not self.send_queue.empty()
