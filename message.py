@@ -112,10 +112,15 @@ class Message(object):
 
         if not (
             isinstance(self.unique_identifier, str) and
-            isinstance(self.attrs, list) and
-            len(self.attrs) == len(self.__map__[self.unique_identifier])
+            isinstance(self.attrs, list)
         ):
             raise MalformedMessage
+
+        if not (
+            self.unique_identifier in self.__map__ and
+            len(self.attrs) == len(self.__map__[self.unique_identifier])
+        ):
+            raise UnregisteredMessage
 
         if not self.unique_identifier in self.__map__:
             raise UnregisteredMessage
