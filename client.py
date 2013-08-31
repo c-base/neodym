@@ -52,5 +52,6 @@ class Client(asyncore.dispatcher):
         if not message:
             self.logger.info('Timeout reached!')
             self.handle_close()
-            return None
-        return self.__connection
+        elif message.unique_identifier == 'handshake':
+            self.logger.info('Connection established.')
+            return self.__connection

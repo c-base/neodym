@@ -14,7 +14,7 @@ class Server(asyncore.dispatcher):
         asyncore.dispatcher.__init__(self)
 
         self.logger = logging.getLogger('Server-%s' % id(self))
-        self.logger.info('Initializing: %s' % self)
+        self.logger.debug('Initializing: %s' % self)
 
         if not self.__hash__:
             raise NotYetInitialized
@@ -34,7 +34,7 @@ class Server(asyncore.dispatcher):
         self.listen(self.__max__)
 
     def handle_accept(self):
-        self.logger.debug('Incoming connection request...')
+        self.logger.info('Connection request incoming...')
         client_info = self.accept()
         if client_info:
             socket, port = client_info
@@ -58,12 +58,12 @@ class Server(asyncore.dispatcher):
                     if message.unique_identifier == 'handshake':
                         self.logger.debug('Handling handshake request...')
                         if message.get_attr('msg_map_hash') == self.__hash__:
-                            self.logger.debug('Handshake: OK')
+                            self.logger.info('Handshake: OK')
                             c.is_connected = True
                             c.put(message)
                             c.handle_write()
                         else:
-                            self.logger.debug('Hash mismatch!')
+                            self.logger.info('Hash mismatch!')
 
                 # handle the message for all connected clients
                 elif c.is_connected is True:
