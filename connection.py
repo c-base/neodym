@@ -35,7 +35,7 @@ class Connection(asyncore.dispatcher):
         self.logger.debug('Data incoming...')
         chunk = self.recv(self.__chunk__)
         if not chunk:
-            self.handle_close()
+            self.close()
 
         lines = chunk.replace('\r\n', '\n').split('\n')
         self.logger.debug('Received data: %s' % str(lines))
@@ -59,7 +59,6 @@ class Connection(asyncore.dispatcher):
     def handle_close(self):
         self.logger.debug('Closing!')
         self.drop()
-        self.close()
 
     def put(self, message):
         self.logger.debug('Throwing message into send queue: %s' % message)
