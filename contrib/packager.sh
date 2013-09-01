@@ -24,7 +24,7 @@ cleanup() {
 }
 
 # bootstrap working directory
-#trap cleanup INT TERM QUIT
+trap cleanup INT TERM QUIT
 mkdir -p "$sourcedir"
 
 # copy source to working directory
