@@ -60,4 +60,4 @@ echo "$setup_stanza" > "$projectdir/setup.py"
 # run setup.py
 cd "$projectdir"
 python setup.py sdist
-echo python setup.py sdist upload
+python setup.py register && python setup.py sdist upload
